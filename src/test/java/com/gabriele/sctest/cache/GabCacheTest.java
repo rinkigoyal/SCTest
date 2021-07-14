@@ -7,6 +7,10 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.function.Function;
 
+/**
+ * This test is not Prod ready (it wasn't part of the requirements) or covering all scenarios, I just wrote them to support the development,
+ * and I committed the latest version - past versions covered other scenarios
+ */
 public class GabCacheTest {
 
     private static int err = 0;

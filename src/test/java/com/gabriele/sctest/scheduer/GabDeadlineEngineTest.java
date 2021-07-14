@@ -4,6 +4,10 @@ import org.junit.Test;
 
 import java.util.function.Consumer;
 
+/**
+ * This test is not Prod ready (it wasn't part of the requirements) or covering all scenarios, I just wrote them to support the development,
+ * and I committed the latest version - past versions covered other scenarios
+ */
 public class GabDeadlineEngineTest {
 
     private final DeadlineEngine underTest = new GabDeadlineEngine();

@@ -21,6 +21,10 @@ public class GabCache<K, V> implements Cache<K, V> {
      * based on the time stored on it, or we could use a SoftReference to clean up values when heap is full.
      * I decided to return null in case of error in the function calculation because (based on business requirements) the function
      * could actually be written to return an Optional and use None (for example) to identify the absence of an output value for the given input.
+     *
+     * In our team we use the Spring Boot cache wrapper with caffeine cache. This cache also handles the case of calculating the value
+     * concurrently for same key (ie. the function would be called only once).
+     *
      * @param key The key to find in the cache. Currently null values are not supported and we throw an exception if null passed as argument.
      * @return The value for the passed key or null if the computation of the function resulted in an error.
      **/

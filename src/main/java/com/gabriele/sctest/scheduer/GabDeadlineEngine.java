@@ -22,7 +22,12 @@ public class GabDeadlineEngine implements DeadlineEngine {
      */
     @Override
     public long schedule(long deadlineMs) {
+        long timeNow = System.currentTimeMillis();
+        if (deadlineMs < timeNow) {
+            throw new IllegalArgumentException("Can't schedule events with past deadline: " + deadlineMs);
+        }
         final SchedulerObject schedulerObject = new SchedulerObject(deadlineMs);
+        log.info("Adding task with id {} and deadline {}", schedulerObject.getId(), deadlineMs);
         queue.add(schedulerObject);
         return schedulerObject.getId();
     }
@@ -35,11 +40,12 @@ public class GabDeadlineEngine implements DeadlineEngine {
      */
     @Override
     public boolean cancel(long requestId) {
+        log.info("Cancelling task with id {}", requestId);
         return queue.removeIf(e -> e.getId() == requestId);
     }
 
     /**
-     * Time complexity for maxPoll elements is O(maxPoll) - using priorityQueue
+     * Time complexity for maxPoll elements is O(maxPoll) * O(log n) - using priorityQueue
      *
      * @param nowMs   time in millis since epoch to check deadlines against.
      * @param handler to call with identifier of expired deadlines.
@@ -48,9 +54,11 @@ public class GabDeadlineEngine implements DeadlineEngine {
      */
     @Override
     public int poll(long nowMs, Consumer<Long> handler, int maxPoll) {
+        log.info("Polling max {} tasks for {}", maxPoll, nowMs);
         int currentPoll = 0;
         while (queue.peek() != null && nowMs >= queue.peek().getDeadlineMs() && currentPoll < maxPoll) {
             final SchedulerObject currentElement = queue.poll();
+            log.info("Found task with id {} expired at {}", currentElement.getId(), currentElement.getDeadlineMs());
             handler.accept(currentElement.getId());
             currentPoll++;
         }

@@ -7,9 +7,5 @@ import lombok.Setter;
 @Setter
 class GabCacheValue<V> {
     private V value;
-    private CacheStatus cacheStatus;
-
-    GabCacheValue() {
-        this.cacheStatus = CacheStatus.IN_PROGRESS;
-    }
+    private CacheStatus cacheStatus = CacheStatus.IN_PROGRESS;
 }
